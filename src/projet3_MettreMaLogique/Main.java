@@ -17,12 +17,7 @@ public class Main {
 	public static int prop_nbTry = 0;
 	
 	public static void main(String... args) {
-		
-		/*log4j.trace("This is a trace message."); 
-		log4j.debug("This is a debug message."); 
-		log4j.info("This is an info message."); 
-		log4j.error("This is an error message");
-		*/
+
 		log4j.info("Program has been launch"); 
 		log4j.info("Recup properties from config.properties"); 
 		final Properties confProperties = new Properties();
@@ -32,7 +27,6 @@ public class Main {
 
 			input = new FileInputStream("src/config.properties");
 
-			// load a properties file
 			confProperties.load(input);
 
 
@@ -65,11 +59,18 @@ public class Main {
 		//boucle pour l'instant sur lui meme
 		while (1==1) {
 			// Choix du jeux et du mode
-			log4j.info("Game choice --> "+obj_gameManager.choixPlayer());
+			String choicePlayer = obj_gameManager.choixPlayer();
+			log4j.info("Game choice --> "+choicePlayer);
 			
 			//Lancement du jeux et du mode
-
-			obj_gameManager.gameRecherche(prop_nbCase,prop_nbTry);
+			switch (choicePlayer) {
+				case "Recherche + ou -":
+					obj_gameManager.gameRechercheDefenseur(prop_nbCase,prop_nbTry);
+					break;
+				case "Mastermind" :
+					obj_gameManager.gameRechercheChallenger(prop_nbCase,prop_nbTry);
+					break;
+			}
 			
 		}
 		
