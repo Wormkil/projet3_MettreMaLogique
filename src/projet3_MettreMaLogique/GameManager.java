@@ -188,30 +188,8 @@ public class GameManager {
 		
 	}
 	
-	public void mastermindManager(int nbCase, int nbTry) {
-		
-		int nbRandom = 0;
-		int cpt = 0;
-		boolean haveWin = false;
 
-		System.out.println("Bienvenue dans le mastermin ! Je vais choisir un nombre et vous essayerez de le deviner");
-		System.out.println("Je vous aiderais en vous indiquant le nombre de chiffre trouvé et bien placé ");
-		
-		nbRandom = u.randomGenerator(nbCase);
-		System.out.println("(dev mode) nbRandom = "+nbRandom);
-		while ( cpt < nbTry && haveWin == false) {
-			if (u.mastermindChallengerOneLoop(nbRandom)){ haveWin = true; }
-			else { haveWin = false; }
-			cpt++;
-		}
-		
-		if (haveWin) {
-			System.out.println("Bravo vous avez trouvé ! La solution était bien "+nbRandom);
-		}
-		else {
-			System.out.println("Vous avez perdu ... La solution était "+nbRandom);
-		}
-	}
+
 
 	
 	

@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import projet3_MettreMaLogique.GameManager;
+import projet3_MettreMaLogique.Mastermind;
 
 public class Main {
 	
@@ -68,7 +69,8 @@ public class Main {
 					obj_gameManager.gameRechercheChallenger(prop_nbCase,prop_nbTry);
 					break;
 				case "Mastermind" :
-					obj_gameManager.mastermindManager(prop_nbCase,prop_nbTry);
+					//obj_gameManager.mastermindManager(prop_nbCase,prop_nbTry);
+					Mastermind obj_Mastermind = new Mastermind(prop_nbCase,prop_nbTry,"defenseur");
 					break;
 			}
 			

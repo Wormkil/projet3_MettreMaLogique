@@ -16,14 +16,14 @@ public class Utils {
 		
 	}
 	
-	public int randomGenerator(int pNumberCase) {
-		int nbRandom = (int)(Math.random()*Math.pow(10,pNumberCase));
+	public int randomGenerator(int NumberCase) {
+		int nbRandom = (int)(Math.random()*Math.pow(10,NumberCase));
 
 		
 		//Adds 0 to nbRandom if nbRandom synthax is incorrect 
 		String str = Integer.toString(nbRandom);		
-		if (pNumberCase > str.length()) {
-			int i = pNumberCase - str.length();
+		if (NumberCase > str.length()) {
+			int i = NumberCase - str.length();
 			for ( int j = 0; j<i; j++) {
 				str += "0";
 				
@@ -34,12 +34,12 @@ public class Utils {
 		return nbRandom;
 	}
 	
-	public int[] tabIntMaker(int pIntToTransform, int pNumberCase) {
+	public int[] tabIntMaker(int IntToTransform, int NumberCase) {
 		
-		int[] tabInt = new int[pNumberCase];
-		int tmpInt = pIntToTransform;
+		int[] tabInt = new int[NumberCase];
+		int tmpInt = IntToTransform;
 		
-		for ( int i = pNumberCase-1; i>=0; i--) {
+		for ( int i = NumberCase-1; i>=0; i--) {
 			tabInt[i] =  tmpInt % 10;
 			tmpInt /= 10;
 		}
@@ -47,6 +47,18 @@ public class Utils {
 		return tabInt;
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public String[] tabStringMaker(String pStringToTransform, int pNumberCase) {
 		
@@ -173,16 +185,10 @@ public class Utils {
 	}
 	
 	
-	//Méthode qui
+
 	
-	// Méthode qui lit un tableau de int, qui le compare à un autre, et qui sort le nombre de bien placé et le nombre de présent dans le premier tableau
-	
-	//Methode qui affiche une proposition de mastermind
-	
-	//Méthode qui fait une loop defenseur
-	// Méthode qui fait une loop challengeur
-	
-	public int[] compareTabMastermind(int intSecret, int intToCompare) {
+	/*
+	 * public int[] compareTabMastermind(int intSecret, int intToCompare) {
 		log4j.info("compareTabMastermind launch");
 		
 		int nbFind = 0;
@@ -191,11 +197,7 @@ public class Utils {
 		int[] tabIntSecret = tabIntMaker(intSecret,nbCase);
 		int[] tabIntToCompare = tabIntMaker(intToCompare,nbCase);
 		
-		/*int[] sortTabIntSecret = tabIntSecret;
-		Arrays.sort(sortTabIntSecret);
-		int[] sortTabIntToCompare = tabIntToCompare;
-		Arrays.sort(sortTabIntToCompare);*/
-				
+
 		int[] tmptTab = new int[nbCase];
 		
 		int[] nbFindPlaceTab = new int[nbCase];
@@ -239,9 +241,6 @@ public class Utils {
 	}
 	
 	public boolean mastermindChallengerOneLoop(int nbRandom) {
-	
-		System.out.println("Veuillez maintenant essayer de trouver mon nombre :");
-		
 		keyboard = new Scanner(System.in);
 		int playerInt = keyboard.nextInt();
 		
@@ -249,5 +248,23 @@ public class Utils {
 		else { return false; }
 	}
 
-
+	public void loopAndCheckWinMastermind(int nbRandom, int nbTry) {
+		int cpt = 0;
+		boolean haveWin = false;
+		
+		while ( cpt < nbTry && haveWin == false) {
+			if (mastermindChallengerOneLoop(nbRandom)){ haveWin = true; }
+			else { haveWin = false; }
+			cpt++;
+		}
+		
+		if (haveWin) {
+			System.out.println("Bravo vous avez trouvé ! La solution était bien "+nbRandom);
+		}
+		else {
+			System.out.println("Vous avez perdu ... La solution étaitdown "+nbRandom);
+		}
+	}
+	 */
+	
 }
