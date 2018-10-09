@@ -60,17 +60,19 @@ public class Main {
 		while (1==1) {
 			// Choix du jeux et du mode
 			String choicePlayer = obj_gameManager.choixPlayer();
-			log4j.info("Game choice --> "+choicePlayer);
+			//log4j.info("Game choice --> "+choicePlayer);
 			
 			//Lancement du jeux et du mode
 			switch (choicePlayer) {
 				case "Recherche + ou -":
-					obj_gameManager.gameRechercheDefenseur(prop_nbCase,prop_nbTry);
-					break;
-				case "Mastermind" :
 					obj_gameManager.gameRechercheChallenger(prop_nbCase,prop_nbTry);
 					break;
+				case "Mastermind" :
+					obj_gameManager.mastermindManager(prop_nbCase,prop_nbTry);
+					break;
 			}
+			
+			
 			
 		}
 		

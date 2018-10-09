@@ -4,10 +4,12 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Utils {
 	
 	private static final Logger log4j = LogManager.getLogger(Utils.class.getName());
+	Scanner keyboard = new Scanner(System.in);
 	
 	public Utils() {
 		
@@ -171,5 +173,81 @@ public class Utils {
 	}
 	
 	
+	//Méthode qui
 	
+	// Méthode qui lit un tableau de int, qui le compare à un autre, et qui sort le nombre de bien placé et le nombre de présent dans le premier tableau
+	
+	//Methode qui affiche une proposition de mastermind
+	
+	//Méthode qui fait une loop defenseur
+	// Méthode qui fait une loop challengeur
+	
+	public int[] compareTabMastermind(int intSecret, int intToCompare) {
+		log4j.info("compareTabMastermind launch");
+		
+		int nbFind = 0;
+		int nbWellPlaced = 0;
+		int nbCase = Integer.toString(intSecret).length();
+		int[] tabIntSecret = tabIntMaker(intSecret,nbCase);
+		int[] tabIntToCompare = tabIntMaker(intToCompare,nbCase);
+		
+		/*int[] sortTabIntSecret = tabIntSecret;
+		Arrays.sort(sortTabIntSecret);
+		int[] sortTabIntToCompare = tabIntToCompare;
+		Arrays.sort(sortTabIntToCompare);*/
+				
+		int[] tmptTab = new int[nbCase];
+		
+		int[] nbFindPlaceTab = new int[nbCase];
+		int tmpInt = 0;
+		
+		
+		for (int i=0; i<nbCase; i++) 
+		{
+			tmpInt = tabIntSecret[i];
+			for (int j=0; j<nbCase; j++) 
+			{
+				if ( tabIntSecret[i] == tabIntToCompare[i]) {
+					nbWellPlaced += 1;
+					j = nbCase;
+				}
+				
+				else if (tabIntSecret[i] == tabIntToCompare[j]) { 
+					nbFind += 1;
+					j = nbCase;
+				}
+			}
+			
+			
+		}
+		
+		nbFindPlaceTab[0] = nbFind;
+		nbFindPlaceTab[1] = nbWellPlaced;
+		log4j.trace("nbFind = "+nbFind);
+		log4j.trace("nbWellPlaced = "+nbWellPlaced);
+		
+		log4j.info("compareTabMastermind done");
+		return nbFindPlaceTab;
+		
+	}
+
+	public boolean outAnswerMastermind ( int[] resultatCompareTab, int proposition) {
+		int nbCase = resultatCompareTab.length;
+		System.out.println("Proposition : "+proposition+"  -> Réponse : "+resultatCompareTab[0]+" présent, "+resultatCompareTab[1]+" bien placé");
+		if (resultatCompareTab[1] == nbCase) { return true; }
+		else { return false; }
+	}
+	
+	public boolean mastermindChallengerOneLoop(int nbRandom) {
+	
+		System.out.println("Veuillez maintenant essayer de trouver mon nombre :");
+		
+		keyboard = new Scanner(System.in);
+		int playerInt = keyboard.nextInt();
+		
+		if (outAnswerMastermind(compareTabMastermind(nbRandom, playerInt), playerInt)) { return true; }
+		else { return false; }
+	}
+
+
 }
