@@ -8,79 +8,125 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import projet3_MettreMaLogique.GameManager;
+import projet3_MettreMaLogique.GameManagerParent;
 import projet3_MettreMaLogique.Mastermind;
+import utils.Utils;
 
 public class Main {
 	
-	private static final Logger log4j = LogManager.getLogger(Main.class.getName());
+	protected static final Logger log4j = LogManager.getLogger(Main.class.getName());
+	protected static Utils u = new Utils();
+	
 	public static int prop_nbCase = 0;
 	public static int prop_nbTry = 0;
 	
 	public static void main(String... args) {
 
-		log4j.info("Program has been launch"); 
-		log4j.info("Recup properties from config.properties"); 
-		final Properties confProperties = new Properties();
-		InputStream input = null;
-
-		try {
-
-			input = new FileInputStream("src/config.properties");
-
-			confProperties.load(input);
-
-
-			
-			prop_nbCase = Integer.parseInt(confProperties.getProperty("nbCase"));
-			prop_nbTry = Integer.parseInt(confProperties.getProperty("nbTry"));
-			
-			//Small security against users
-			if (prop_nbCase == 0) { prop_nbCase = 1; }
-			if (prop_nbTry == 0) { prop_nbTry = 1; }
-			
-
-		} catch (final IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (final IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		choiceMenu();
 		
-		log4j.info("Recup properties sucess");
-		log4j.info("Call gameManager()");
 		
-		GameManager obj_gameManager = new GameManager(); 
 		
-		//boucle pour l'instant sur lui meme
-		while (1==1) {
-			// Choix du jeux et du mode
-			String choicePlayer = obj_gameManager.choixPlayer();
-			//log4j.info("Game choice --> "+choicePlayer);
+		boolean infiny = true;
+		while (infiny) {
 			
-			//Lancement du jeux et du mode
-			switch (choicePlayer) {
-				case "Recherche + ou -":
-					obj_gameManager.gameRechercheChallenger(prop_nbCase,prop_nbTry);
+			
+			
+			System.out.println( "============================================================="+'\n'+'\n'+
+					
+								"Que voulez vous faire ?"+'\n'+
+				
+								"1° Rejouer"+'\n'+
+								"2° Changer de jeux"+'\n'+
+								"3° Quitter"+'\n'+'\n'+
+								
+								"=============================================================");
+			
+			
+			
+			
+			
+			
+			
+			switch (u.listenIntPlayer(1)) {
+				case "1" :
 					break;
-				case "Mastermind" :
-					//obj_gameManager.mastermindManager(prop_nbCase,prop_nbTry);
-					Mastermind obj_Mastermind = new Mastermind(prop_nbCase,prop_nbTry,"defenseur");
+				case "2" :
+					System.out.println(" - Retour au menu");
+					choiceMenu();
+					break;
+				case "3" :
+					System.out.println(" - Exit");
+					System.exit(0);
+					break;
+				default :
+					log4j.debug("Erreur dans le menu du choix du jeux");
 					break;
 			}
-			
-			
-			
-		}
-		
-		
-		
+		}	
 	}
+
+	private static void choiceMenu() {
+		
+		
+		GameManagerParent gameChoice = new GameManagerParent();
+		String modeChoice = "Challenger";
+		
+		
+		System.out.println( "============================================================="+'\n'+'\n'+
+				
+				"Bienvenu dans cette compilation de jeux"+'\n'+
+				"Vous pouvez jouer à deux jeux, choisissez en tapant"+'\n'+
+				"1 ou 2, puis choississez le mode de la même manière :"+'\n'+'\n'+
+				
+				"1° Recherche + ou -"+'\n'+
+				"2° Mastermind"+'\n'+'\n'+
+				
+				"============================================================="
+		);
+		
+		switch (u.listenIntPlayer(1)) {
+			case "1" :
+				gameChoice = new Recherche();
+				break;
+			case "2" :
+				gameChoice = new Mastermind();
+				break;
+			default :
+				log4j.debug("Erreur dans le menu du choix du jeux");
+				break;
+		}
+		
+		System.out.println( "============================================================="+'\n'+'\n'+
+			
+						"Boujours, bienvenu dans cette compilation de jeux"+'\n'+
+						"Vous pouvez jouer à deux jeux, choisissez en tapant"+'\n'+
+						"1 ou 2, puis choississez le mode de la même manière :"+'\n'+'\n'+
+						
+						"1° Challenger"+'\n'+
+						"2° Defenseur"+'\n'+
+						"3° Duel"+'\n'+'\n'+
+						
+						"============================================================="
+		);
+		switch (u.listenIntPlayer(1)) {
+			case "1" :
+				modeChoice = "Challenger";
+				break;
+			case "2" :
+				modeChoice = "Defenseur";
+				break;
+			case "3" :
+				modeChoice = "Duel";
+				break;
+			default :
+				log4j.debug("Erreur dans le menu du choix du jeux");
+				break;
+		}
+		
+		gameChoice.lauchGame(modeChoice);
+				
+	}
+
+}			
+		
 	
-	
-}
