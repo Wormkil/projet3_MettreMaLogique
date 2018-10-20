@@ -35,6 +35,19 @@ public class Utils {
 		
 		while (playerOut.length() != nbCase || !stringIsInt(playerOut) ) { 
 			System.out.println("Saisie Int incorrecte, veuillez recommencer !");
+			
+			if (playerOut.length() < nbCase) {
+				System.out.print("Pas assez de charactère. ");
+			}
+			else if (playerOut.length() > nbCase) {
+				System.out.print("Trop de charactère. ");
+			} 
+			
+			if (!stringIsInt(playerOut)) {
+				System.out.print("Charactère interdit. ");
+			}
+			System.out.print('\n');
+			
 			playerOut = keyboard.nextLine();
 		}
 		return playerOut;
@@ -50,9 +63,11 @@ public class Utils {
 		} 
 	}
 	
-	public String listenStringPlayer(int nbCase, boolean bool) {
+	public String listenStringPlayer(int nbCase) {
 		keyboard = new Scanner(System.in);
 		String playerOut = keyboard.nextLine();
+		
+		
 		
 		while (playerOut.length() != nbCase || !correctFormat(playerOut) ) { 
 			
@@ -70,6 +85,7 @@ public class Utils {
 				System.out.print("Charactère interdit. ");
 			}
 			System.out.print('\n');
+			
 			playerOut = keyboard.nextLine();
 		}
 		return playerOut;

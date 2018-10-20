@@ -6,6 +6,7 @@ public class RechercheModeParent extends Recherche {
 	
 
 	static String playerString = "";
+	static String whosTurn = "";
 	
 	// Mode 1,2
 	protected static String tabCompare(String[] ptab1, String[] ptab2) {
@@ -26,7 +27,7 @@ public class RechercheModeParent extends Recherche {
 	// Mode 1
 	protected static void printProposition(String proposition, String result) { 
 		
-		System.out.println("Proposition : " + proposition + " -> Réponse : "+result);
+		System.out.println("Proposition : " + proposition + " -> Réponse : "+result+'\n');
 		
 	}
 	
@@ -45,6 +46,11 @@ public class RechercheModeParent extends Recherche {
 	
 	// Mode 1	
 	protected static boolean oneLoopChallenger(String nbRandom) {
+		if (!whosTurn.equals("")) {
+			System.out.print(whosTurn);
+		}
+		
+		
 		System.out.print("Proposition : ");
 		String playerInt = u.listenIntPlayer(nbCase);
 		
@@ -63,12 +69,37 @@ public class RechercheModeParent extends Recherche {
 	
 	// Mode 2
 	protected static boolean oneLoopDefenseur(String nbRandom) {
-		System.out.println("Je pense que votre nombre est : "+nbRandom);
-		playerString = u.listenStringPlayer(nbCase, true);
+		if (!whosTurn.equals("")) {
+			System.out.print(whosTurn);
+		}
+		
+		
+		System.out.print("Proposition : "+nbRandom+"  -> Réponse : ");
+		playerString = u.listenStringPlayer(nbCase);
 		
 		printProposition(nbRandom,playerString);
 		
 		return checkWinChallenge(playerString);
+		
+	}
+	
+	//Mode 3
+	protected static String oneLoopDuel(String nbAdverse, String nbPlayer, String iniNbrandom) {
+		log4j.debug("One loop duel call");
+		
+		whosTurn = "(PlayerTurn) ";
+		
+		if (oneLoopChallenger(nbAdverse)) {
+			return "playerWin";
+		}
+		
+		whosTurn = "(ComputerTurn) ";
+		
+		if (oneLoopDefenseur(iniNbrandom)) {
+			return "adversaireWin";
+		}
+		
+		return "noWin";
 		
 	}
 	

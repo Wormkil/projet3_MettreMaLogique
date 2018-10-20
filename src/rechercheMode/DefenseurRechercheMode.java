@@ -21,7 +21,7 @@ public class DefenseurRechercheMode extends RechercheModeParent{
 		
 		System.out.println("playerInt = "+playerInt);
 		
-		nbRandom = "001" ;//u.randomGenerator(nbCase);
+		nbRandom = u.randomGenerator(nbCase);
 
 		System.out.println("nbRandom = "+nbRandom);
 		
