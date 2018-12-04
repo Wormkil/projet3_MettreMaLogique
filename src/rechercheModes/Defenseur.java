@@ -1,16 +1,18 @@
-package rechercheMode;
+package rechercheModes;
 
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class DefenseurRechercheMode extends RechercheModeParent{
+public class Defenseur extends ModeParent{
 	
 	static boolean loop = true;
 	static String nbRandom = "";
 	static int currentTry = 1;
 	static int playerInt = 0;
 	static String[][] numberMinMaxTab;
+	static List<String> sollutionList = new ArrayList<>();
 	
-	public DefenseurRechercheMode() {
+	public Defenseur() {
 
 		
 		
@@ -25,18 +27,26 @@ public class DefenseurRechercheMode extends RechercheModeParent{
 
 		System.out.println("nbRandom = "+nbRandom);
 		
-		numberMinMaxTab = new String[nbCase][3];
-		numberMinMaxTab = initTabIntMinMax(nbRandom);
 		
 		
 		
+		/*numberMinMaxTab = new String[nbCase][3];
+		numberMinMaxTab = initTabIntMinMax(nbRandom);*/
 		
-		loopsDefenseurRecherche();
+		String lastSolution = "";
+		for (int i = 0; i<nbCase; i++) {
+			lastSolution += "9";
+		}
+		
+		System.out.println("lastSolution = "+lastSolution);
+		
+		//loopsDefenseurRecherche();
 		
 		
 	}
 	
-	private static void loopsDefenseurRecherche() {
+	/*
+	 * private static void loopsDefenseurRecherche() {
 		
 		while (loop) {
 			
@@ -56,5 +66,7 @@ public class DefenseurRechercheMode extends RechercheModeParent{
 		}
 		
 	}
+	
+	 */
 	
 }

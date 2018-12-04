@@ -1,15 +1,9 @@
-package projet3_MettreMaLogique;
+package central;
 
-import org.apache.logging.log4j.Logger; 
+import org.apache.logging.log4j.Logger;
+import central.GameManager;
+import central.MastermindModesLauncher;
 import org.apache.logging.log4j.LogManager;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import projet3_MettreMaLogique.GameManagerParent;
-import projet3_MettreMaLogique.Mastermind;
 import utils.Utils;
 
 public class Main {
@@ -24,11 +18,8 @@ public class Main {
 
 		choiceMenu();
 		
-		
-		
 		boolean infiny = true;
 		while (infiny) {
-			
 			
 			
 			System.out.println( "============================================================="+'\n'+'\n'+
@@ -40,12 +31,6 @@ public class Main {
 								"3° Quitter"+'\n'+'\n'+
 								
 								"=============================================================");
-			
-			
-			
-			
-			
-			
 			
 			switch (u.listenIntPlayer(1)) {
 				case "1" :
@@ -67,10 +52,8 @@ public class Main {
 
 	private static void choiceMenu() {
 		
-		
-		GameManagerParent gameChoice = new GameManagerParent();
+		GameManager gameChoice = new GameManager();
 		String modeChoice = "Challenger";
-		
 		
 		System.out.println( "============================================================="+'\n'+'\n'+
 				
@@ -86,10 +69,10 @@ public class Main {
 		
 		switch (u.listenIntPlayer(1)) {
 			case "1" :
-				gameChoice = new Recherche();
+				gameChoice = new RechercheModesLauncher();
 				break;
 			case "2" :
-				gameChoice = new Mastermind();
+				gameChoice = new MastermindModesLauncher();
 				break;
 			default :
 				log4j.debug("Erreur dans le menu du choix du jeux");

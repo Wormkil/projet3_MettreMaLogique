@@ -1,8 +1,8 @@
-package rechercheMode;
+package rechercheModes;
 
 
 
-public class DuelRechercheMode extends RechercheModeParent{
+public class Duel extends ModeParent{
 	
 	static boolean loop = true;
 	static int currentTry = 1;
@@ -12,7 +12,7 @@ public class DuelRechercheMode extends RechercheModeParent{
 	static String[][] numberMinMaxTab = new String[nbCase][3];
 	
 	
-	public DuelRechercheMode() {
+	public Duel() {
 		
 		whosTurn = "(PlayerTurn) ";
 		

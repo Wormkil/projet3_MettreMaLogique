@@ -1,4 +1,4 @@
-package projet3_MettreMaLogique;
+package central;
 
 import java.util.Scanner;
 
@@ -7,11 +7,9 @@ import org.apache.logging.log4j.LogManager;
 
 import utils.Utils;
 
-public class GameManagerParent {
+public class GameManager {
 	
-	//public final GameManagerParent instance = new GameManagerParent();
-	
-	public static final Logger log4j = LogManager.getLogger(GameManagerParent.class.getName());
+	public static final Logger log4j = LogManager.getLogger(GameManager.class.getName());
 	public static Utils u = new Utils();
 	public Scanner keyboard = new Scanner(System.in);
 	
@@ -24,18 +22,18 @@ public class GameManagerParent {
 	public static String mode = configTab[2];
 	public static String devMode;
 
-	// private>protected>private
-	
-	//protected GameManagerParent() {}
-	
-	
-
 	public boolean lauchGame(String mode) {
 		log4j.debug("je suis pas un jeux");
 		return false;
 		
 	}
 	
+    protected boolean checkWin(int tmpI, int currentNbTry){
+        boolean win = true;
+        if (tmpI != nbCase) win = false;
+        if (currentNbTry > nbTry) win = false;
+        return win;
+    }
 	
 }
 
