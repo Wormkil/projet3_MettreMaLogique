@@ -18,9 +18,8 @@ public class GameManager {
 	
 	public static String[] configTab = u.getConfig();
 	public static int nbCase = Integer.parseInt(configTab[0]);
-	public static int nbTry = Integer.parseInt(configTab[1]);
-	public static String mode = configTab[2];
-	public static String devMode;
+	public static int tryMax = Integer.parseInt(configTab[1]);
+	public static String devMode = configTab[2];
 
 	public boolean lauchGame(String mode) {
 		log4j.debug("je suis pas un jeux");
@@ -31,7 +30,7 @@ public class GameManager {
     protected boolean checkWin(int tmpI, int currentNbTry){
         boolean win = true;
         if (tmpI != nbCase) win = false;
-        if (currentNbTry > nbTry) win = false;
+        if (currentNbTry > tryMax) win = false;
         return win;
     }
 	

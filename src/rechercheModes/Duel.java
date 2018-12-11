@@ -22,12 +22,12 @@ public class Duel extends ModeParent{
 		System.out.println("J'ai choisis un nombre secrêt que vous devez devinez avant que je devine le votre. ");
 		
 		System.out.println("Quel est votre nombre secret ?");
-		intPlayer = u.listenIntPlayer(nbCase);
+		intPlayer = u.listenPlayer("int_"+nbCase+"_stop");
 		nbRandom = u.randomGenerator(nbCase);
 		System.out.println("Je vous laisse commencé, que proposez vous ?"+'\n');
 
 		numberMinMaxTab = initTabIntMinMax(nbRandom);
-		
+		loop = true;
 		loopsDuelRecherche();
 		
 		
@@ -35,10 +35,8 @@ public class Duel extends ModeParent{
 	
 	
 	private static void loopsDuelRecherche() {
-		log4j.debug("avant la boucle");
 		while (loop) {
-			log4j.debug("avant le if");
-			
+					
 			String result = oneLoopDuel(intAdverse,intPlayer,nbRandom );
 			
 			if (result.equals("playerWin")) {
@@ -49,9 +47,8 @@ public class Duel extends ModeParent{
 				System.out.println("J'ai trouvé ! La solution est bien : " +intPlayer);
 				loop = false;
 			}
-			else if (currentTry < nbTry ){
+			else if (currentTry < tryMax ){
 				currentTry++;
-				log4j.debug("playerString : "+playerString);
 				numberMinMaxTab = changeNbRandom(numberMinMaxTab, playerString);
 				nbRandom = tabIntToInt(numberMinMaxTab);
 			}

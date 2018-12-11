@@ -6,7 +6,7 @@
     </Console> 
   </Appenders> 
   <Loggers> 
-    <Logger name="projet3_MettreMaLogique" level="error"/> 
+    <Logger name="projet3_MettreMaLogique" level="trace"/> 
     <Root level="trace"> 
       <AppenderRef ref="STDOUT"/> 
     </Root> 

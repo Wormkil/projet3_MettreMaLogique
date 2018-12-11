@@ -8,24 +8,23 @@ import utils.AnswerDuelMastermind;
 
 public class Defenseur extends ModeParent {
 
+	protected int actualTry = 0;
+	protected String firstGuess = "";
+    protected boolean win = false;
+    protected List<String> solutionToRemove  = new ArrayList<>();
+    protected List<String> solutionList = new ArrayList<>();
+    protected List<String> unuseds = new ArrayList<>();
+    protected List<AnswerDuelMastermind> answersPossible = new ArrayList<>();
+    protected String secretCode = "";
 
-    private String firstGuess = "";
-    private boolean win = false;
-    private List<String> solutionToRemove  = new ArrayList<>();
-    private List<String> solutionList = new ArrayList<>();
-    private List<String> unuseds = new ArrayList<>();
-    private List<AnswerDuelMastermind> answersPossible = new ArrayList<>();
-
-
-    //Coté objet
-	private String actualGuess;
-	private AnswerDuelMastermind currentAnswer;
+    protected String actualGuess;
+	protected AnswerDuelMastermind currentAnswer;
     
-    public void initialisation(){
+    public void initialisation(boolean launchMain){
 
         String lastSolution = "";
         for (int i = 0; i<nbCase; i++) {
-            lastSolution += "9";
+            lastSolution += intMax;
         }
         int nbSolution = Integer.parseInt(lastSolution);
 
@@ -41,46 +40,47 @@ public class Defenseur extends ModeParent {
                 answersPossible.add(new AnswerDuelMastermind(i,j));
             }
         }
-
-        System.out.println("Bienvenue dans le mastermind mode defenseur ! Choississez un nombre et j'essayerai de le retrouver.");
-        System.out.println("Je vous laisse taper un nombre, pour que vous puissiez le retrouver si vous l'oublié.");
-        u.listenIntPlayer(nbCase);
-        System.out.println("Aidez moi en indiquant le nombre de chiffre trouvé et bien placé.");
-
-        main();
+        
+        //Step 2 - Set a precise first guess (1122) to improve code break.
+    	setFirstGuess();
+    	System.out.println("Bienvenue dans le mastermind !");
+        System.out.println("Je vous laisse taper votre code secret, pour que vous puissiez le retrouver si vous l'oublié.");
+        secretCode = u.listenPlayer("int_"+nbCase+"_stop");
+        
+        if (launchMain) main();
+        
     }
 
     protected void main(){
+    	
+    	System.out.println("Le mode defenseur va maintenant commencer ! Je vais essayer de retrouver votre code secret.");
+        System.out.println("Aidez moi en indiquant le nombre de chiffre trouvé et bien placé.");
 
-        //Step 2 - Set a precise first guess (1122) to improve code break.
-    	setFirstGuess();
-
-        while ( !win) {
-            nbTry++;
-
-            //Step 3 - Wait response from player and compile it in Answer Object
+        while (!win && actualTry < tryMax) {
+        	
+        	u.countTurnDisplay(actualTry,tryMax);
+        	actualTry++;
+        	
             guessAndCompileAnswers(actualGuess);
 
-            //Step 4 - Check if its a win guess
-            win = checkWin(currentAnswer.nbWellPlaced, nbTry );
+            win = checkWin(currentAnswer.nbWellPlaced, actualTry );
 
-            //Step 5 - Remove from 'S' any code that would not give the same response if the current guess were the code.
             solutionToRemove = getSolutionsToRemove(solutionList, actualGuess, currentAnswer);
             solutionList.removeAll(solutionToRemove);
 
-            //Step 6 - Find a next Guess with minMax technique
-            //String nextGuess = unuseds.get(0); //--> Protection to be sur nextGuess is never null or something else
-            //unuseds.remove(nextGuess);
             actualGuess = findNextGuess(unuseds, solutionList, answersPossible);
             
-            
         }
-
-        System.out.println("You have win !");
+        if (actualTry == tryMax) {
+        	System.out.println("Je n'ai pas réussis à trouver la solution, je devais trouver : "+secretCode);
+        }
+        else {
+        	System.out.println("J'ai gagné, la solution était bien : "+secretCode);
+        }
 
     }
 
-    private void setFirstGuess() {
+    protected void setFirstGuess() {
     	
         while (firstGuess.length() < nbCase/2) firstGuess += "1";
         while (firstGuess.length() < nbCase) firstGuess += "2";
@@ -88,13 +88,13 @@ public class Defenseur extends ModeParent {
 
     }
     
-    private void guessAndCompileAnswers(String guess) {
-        System.out.println("--> Je pense que votre nombre est : "+guess);
+    protected void guessAndCompileAnswers(String guess) {
+        System.out.println("Je pense que votre nombre est : "+guess);
         List<String> playerAnswerList = compilePlayerAnswer(guess);
         currentAnswer = new AnswerDuelMastermind(Integer.parseInt(playerAnswerList.get(1)), Integer.parseInt(playerAnswerList.get(2)));
     }
     
-	private String findNextGuess(List<String> unuseds, List<String> remainingSolutions, List<AnswerDuelMastermind> answersPossible) {
+	protected String findNextGuess(List<String> unuseds, List<String> remainingSolutions, List<AnswerDuelMastermind> answersPossible) {
 
         Map<String, Integer> maxByUnused = new HashMap<>();
 		for(String unused : unuseds) {
@@ -120,7 +120,7 @@ public class Defenseur extends ModeParent {
         return maybeNextGuess.or( () -> ma2variable).orElseThrow();
 	}
 
-	private Optional<String>  getNextGuess(Set<Map.Entry<String, Integer>> maxByUnused){
+	protected Optional<String>  getNextGuess(Set<Map.Entry<String, Integer>> maxByUnused){
         int nextGuessMax = Integer.MAX_VALUE;
         Optional<String> nextGuess = Optional.empty();
         for (Map.Entry<String, Integer> mapEntry : maxByUnused) {
@@ -132,19 +132,27 @@ public class Defenseur extends ModeParent {
         return nextGuess;
     }
 
-    protected List<String> compilePlayerAnswer(String proposition) {
-
+	protected List<String> compilePlayerAnswer(String proposition) {
+		
+        if (devMode.equals("1")) {
+        	AnswerDuelMastermind tmpAnswer = compareTabMastermind(secretCode, proposition); 
+        	System.out.println("(dev Mode) Votre code secret : "+secretCode
+        			+" / Nombre de solutions restante : "+solutionList.size()+" "
+        			+ "/ Réponse attendu : Nombre présent = "+tmpAnswer.nbFind+" Nombre bien placé =  "+tmpAnswer.nbWellPlaced);
+        }
+        
         System.out.println("Chiffre présent : ");
-        String nbFind = u.listenIntPlayer(1);
+        String nbFind = u.listenPlayer("int_1_0_"+nbCase);
         System.out.println("Chiffre bien placé : ");
-        String nbPlaced = u.listenIntPlayer(1);
-
+        String nbPlaced = u.listenPlayer("int_1_0_"+nbCase);
+        System.out.println("");
+        
         List<String> myList  = Arrays.asList(proposition,nbFind,nbPlaced);
         return myList;
 
     }
 
-    protected List<String> getSolutionsToRemove(List<String> solutions, String currentGuess, AnswerDuelMastermind currentAnswer) {
+	protected List<String> getSolutionsToRemove(List<String> solutions, String currentGuess, AnswerDuelMastermind currentAnswer) {
 
         List<String> solutionToRemove  = new ArrayList<>();
 
@@ -154,9 +162,6 @@ public class Defenseur extends ModeParent {
             if (!(a.nbWellPlaced == currentAnswer.nbWellPlaced && a.nbFind == currentAnswer.nbFind )) {
                 solutionToRemove.add(solution);
             }
-            /*if (!a.equals(currentAnswer)) {
-                solutionToRemove.add(solution);
-            }*/
         }
 
         return solutionToRemove;
@@ -164,44 +169,11 @@ public class Defenseur extends ModeParent {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     protected List<String> fillNoIntList(List<String> noIntPresent, String intToFill) {
         for (int i=0; i<nbCase; i++) {
             String tmpStr = String.valueOf(intToFill.charAt(i));
             if (!noIntPresent.contains(tmpStr)) noIntPresent.add(String.valueOf(tmpStr));
         }
-        //log4j.debug(" new List  = "+noIntPresent);
         return noIntPresent;
     }
 

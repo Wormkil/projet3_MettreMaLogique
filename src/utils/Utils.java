@@ -1,7 +1,7 @@
 package utils;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
 
 import java.util.Scanner;
 import java.io.FileInputStream;
@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class Utils {
 	
-	private static final Logger log4j = LogManager.getLogger(Utils.class.getName());
+	//private static final Logger log4j = LogManager.getLogger(Utils.class.getName());
 	Scanner keyboard = new Scanner(System.in);
 	
 	public String randomGenerator(int NumberCase) {
@@ -29,28 +29,17 @@ public class Utils {
 		return str;
 	}
 	
-	public String listenIntPlayer(int nbCase) {
+	public String listenPlayer(String contraintes) {
+		Contraintes contrainte = new Contraintes(contraintes);
 		keyboard = new Scanner(System.in);
-		String playerOut = keyboard.nextLine();
+		String playerIn;
 		
-		while (playerOut.length() != nbCase || !stringIsInt(playerOut) ) { 
-			System.out.println("Saisie Int incorrecte, veuillez recommencer !");
+		do{
+			playerIn = keyboard.nextLine();
 			
-			if (playerOut.length() < nbCase) {
-				System.out.print("Pas assez de charactère. ");
-			}
-			else if (playerOut.length() > nbCase) {
-				System.out.print("Trop de charactère. ");
-			} 
-			
-			if (!stringIsInt(playerOut)) {
-				System.out.print("Charactère interdit. ");
-			}
-			System.out.print('\n');
-			
-			playerOut = keyboard.nextLine();
-		}
-		return playerOut;
+		} while (!contrainte.testPlayerIn(playerIn));
+		
+		return playerIn;
 	}
 	
 	public boolean stringIsInt(String string) {
@@ -63,33 +52,6 @@ public class Utils {
 		} 
 	}
 	
-	public String listenStringPlayer(int nbCase) {
-		keyboard = new Scanner(System.in);
-		String playerOut = keyboard.nextLine();
-		
-		
-		
-		while (playerOut.length() != nbCase || !correctFormat(playerOut) ) { 
-			
-			
-			System.out.print("Saisie String incorrecte, veuillez recommencer ! ");
-			
-			if (playerOut.length() < nbCase) {
-				System.out.print("Pas assez de charactère. ");
-			}
-			else if (playerOut.length() > nbCase) {
-				System.out.print("Trop de charactère. ");
-			} 
-			
-			if (!correctFormat(playerOut)) {
-				System.out.print("Charactère interdit. ");
-			}
-			System.out.print('\n');
-			
-			playerOut = keyboard.nextLine();
-		}
-		return playerOut;
-	}
 	
 	public boolean correctFormat(String string) {
 		
@@ -104,10 +66,8 @@ public class Utils {
 	}
 	
 	public String[] getConfig() {
-		String[] configTab = new String[3];
+		String[] configTab = new String[4];
 		
-		
-		log4j.info("Recup properties from config.properties"); 
 		final Properties confProperties = new Properties();
 		InputStream input = null;
 
@@ -120,6 +80,7 @@ public class Utils {
 			configTab[0] = confProperties.getProperty("nbCase");
 			configTab[1] = confProperties.getProperty("nbTry");
 			configTab[2] = confProperties.getProperty("devMode");
+			configTab[3] = confProperties.getProperty("nbColors");
 			
 
 		} catch (final IOException ex) {
@@ -133,14 +94,21 @@ public class Utils {
 				}
 			}
 		}
-		
-		log4j.info("Recup properties sucess");
 		return configTab;
 		
 	}
 	
-
-	
+	public void countTurnDisplay(int actualTry, int tryMax) {
+		if (actualTry+1 < tryMax) {
+			System.out.println('\n'+"<- Nouveau tour -> ");
+			System.out.println("- "+(actualTry+1)+'/'+tryMax+" - "+'\n');
+		}
+		else {
+			System.out.println('\n'+"- Dernier tour - ");
+			System.out.println("- "+(actualTry+1)+'/'+tryMax+" - "+'\n');
+			
+		}
+	}
 	
 	
 	

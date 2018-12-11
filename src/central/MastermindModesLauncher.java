@@ -16,11 +16,11 @@ public class MastermindModesLauncher extends GameManager {
                 break;
             case "Defenseur" :
                 Defenseur  obj2 = new Defenseur();
-                obj2.initialisation();
+                obj2.initialisation(true);
                 break;
             case "Duel" :
             	Duel  obj3 = new Duel();
-                //obj3.initialisation();
+                obj3.initialisation();
                 break;
 
         }
